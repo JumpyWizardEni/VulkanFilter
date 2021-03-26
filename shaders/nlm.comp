@@ -1,0 +1,114 @@
+#version 450
+#extension GL_ARB_separate_shader_objects : enable
+
+#define WORKGROUP_SIZE 16
+#define SYGMA 25
+#define STEP 14
+#define RADIUS 3
+#define PATCH 1
+layout (local_size_x = WORKGROUP_SIZE, local_size_y = WORKGROUP_SIZE, local_size_z = 1 ) in;
+precision highp float;
+precision highp int;
+float d(uint, uint, uint, uint);
+float w(uint, uint, uint, uint);
+float C(uint, uint);
+
+layout(push_constant) uniform params_t
+{
+  int WIDTH;
+  int HEIGHT;
+
+} params;
+
+
+struct Pixel{
+  vec4 value;
+};
+
+float weights[1000];
+layout(std430, binding = 0) buffer buf {
+  Pixel imageData[];
+};
+
+layout(std430, binding = 1) buffer buf2
+{
+   Pixel dstData[];
+};
+
+float d(uint row1, uint column1, uint row2, uint column2)
+{
+  float resultValue = 0;
+  uint counter = 0;
+  for (uint i = 0; i <= 2; ++i) {
+    for (int j = -PATCH; j <= PATCH; ++j) { // row
+      for (int k = -PATCH; k <= PATCH; ++k) { // num in row
+        if (((int(row1) + j) < 0) || ((int(row1) + j) >= params.WIDTH) || ((int(row2) + j) < 0) || ((int(row2) + j) >= params.WIDTH)
+        ||((int(column1) + k) < 0) || ((int(column1) + k) >= params.WIDTH) || ((int(column2) + k) < 0) || ((int(column2) + k) >= params.WIDTH)) {
+          continue;
+        }  
+        counter++;
+        resultValue += pow(imageData[params.WIDTH * uint(int(row1) + j) + uint(int(column1) + k)].value[i] * 255.0f -imageData[params.WIDTH * uint(int(row2) + j) + uint(int(column2) + k)].value[i] * 255.0f, 2) / (3.f*counter*counter);
+      }
+    }
+  }
+  return resultValue;
+}
+
+float w(uint row1, uint column1, uint row2, uint column2)
+{
+  float maximum = max(d(row1, column1, row2, column2) - 2.0f*pow(SYGMA, 2), 0.0f);
+  float height = pow(STEP, 2);
+  return 1.f/exp(maximum * (1.f / height));
+}
+
+vec4 newColor(uint row, uint column) {
+  vec4 newColor;
+  newColor[3] = imageData[params.WIDTH * row + column].value.a;
+  highp float resultValue;
+  float c = C(row, column);
+  uint currWeightCounter = 0;
+  for (uint i = 0; i < 3; ++i) {
+    currWeightCounter = 0;
+    resultValue = 0.0;
+    for (int j = int(row) - RADIUS; j <= int(row) + RADIUS; ++j) { // row
+      for (int k = int(column) - RADIUS; k <= int(column) + RADIUS; ++k) { // num in row
+        if ((j < 0) || (j >= params.HEIGHT) || (k < 0) || (k >= params.WIDTH)) {
+          continue;
+        } else {
+            resultValue += imageData[params.WIDTH * uint(j) + uint(k)].value[i] * weights[currWeightCounter]/c;
+            currWeightCounter++;
+        }
+      }
+    }
+    newColor[i] = resultValue;
+  }
+  return newColor;
+}
+
+float C(uint row, uint column)
+{
+  float resultValue = 0;
+  uint currWeightCounter = 0;
+  float currWeight = 0;
+  for (int j = int(row) - RADIUS; j <= int(row) + RADIUS; ++j) { // row
+    for (int k = int(column) - RADIUS; k <= int(column) + RADIUS; ++k) { // num in row
+        if ((j < 0) || (j >= params.HEIGHT) || (k < 0) || (k >= params.WIDTH)) {
+          continue;
+        }   
+        currWeight = w(row, column, uint(j), uint(k));   
+        resultValue += currWeight;
+        weights[currWeightCounter] = currWeight;
+        currWeightCounter++;
+    }
+  }
+  return resultValue;
+}
+
+
+void main() {
+
+  if(gl_GlobalInvocationID.x >= params.WIDTH || gl_GlobalInvocationID.y >= params.HEIGHT)
+    return;
+  // store the rendered mandelbrot set uinto a storage buffer
+  dstData[params.WIDTH * gl_GlobalInvocationID.y + gl_GlobalInvocationID.x].value = newColor(gl_GlobalInvocationID.y, gl_GlobalInvocationID.x);
+}

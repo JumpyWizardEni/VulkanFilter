@@ -1,0 +1,1 @@
+/usr/bin/c++  -g -fopenmp   CMakeFiles/vulkan_minimal_compute.dir/src/main.cpp.o CMakeFiles/vulkan_minimal_compute.dir/src/vk_utils.cpp.o CMakeFiles/vulkan_minimal_compute.dir/src/Bitmap.cpp.o CMakeFiles/vulkan_minimal_compute.dir/src/bilateral.cpp.o  -o vulkan_minimal_compute /usr/lib/x86_64-linux-gnu/libvulkan.so 

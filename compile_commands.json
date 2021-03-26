@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1",
+  "command": "/usr/bin/c++  -D_CRT_SECURE_NO_WARNINGS  -g -fopenmp   -std=gnu++11 -o CMakeFiles/vulkan_minimal_compute.dir/src/main.cpp.o -c /home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1/src/main.cpp",
+  "file": "/home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1/src/main.cpp"
+},
+{
+  "directory": "/home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1",
+  "command": "/usr/bin/c++  -D_CRT_SECURE_NO_WARNINGS  -g -fopenmp   -std=gnu++11 -o CMakeFiles/vulkan_minimal_compute.dir/src/vk_utils.cpp.o -c /home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1/src/vk_utils.cpp",
+  "file": "/home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1/src/vk_utils.cpp"
+},
+{
+  "directory": "/home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1",
+  "command": "/usr/bin/c++  -D_CRT_SECURE_NO_WARNINGS  -g -fopenmp   -std=gnu++11 -o CMakeFiles/vulkan_minimal_compute.dir/src/Bitmap.cpp.o -c /home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1/src/Bitmap.cpp",
+  "file": "/home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1/src/Bitmap.cpp"
+},
+{
+  "directory": "/home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1",
+  "command": "/usr/bin/c++  -D_CRT_SECURE_NO_WARNINGS  -g -fopenmp   -std=gnu++11 -o CMakeFiles/vulkan_minimal_compute.dir/src/bilateral.cpp.o -c /home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1/src/bilateral.cpp",
+  "file": "/home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1/src/bilateral.cpp"
+}
+]

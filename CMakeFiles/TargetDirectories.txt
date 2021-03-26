@@ -1,0 +1,3 @@
+/home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1/CMakeFiles/rebuild_cache.dir
+/home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1/CMakeFiles/vulkan_minimal_compute.dir
+/home/timofeq/JumpyWiz/CPPsemestr4/vulkan_compute_step1/CMakeFiles/edit_cache.dir
